@@ -2,6 +2,8 @@ import streamlit as st
 import openai
 from youtube_transcript_api import YouTubeTranscriptApi
 from requests.exceptions import RequestException
+from .cache import cache_get, cache_set
+
 key = st.secrets["auth_token"]
 # Set up OpenAI API credentials
 openai.api_key = key
@@ -20,6 +22,11 @@ def combine_transcripts(video_ids):
 
 def convert_single_video(video_id):
     try:
+        # validate cache
+        cache = cache_get(video_id)
+        if cache is not None:
+            return cache
+
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         text = " ".join([line['text'] for line in transcript])
         response = openai.Completion.create(
@@ -33,6 +40,9 @@ def convert_single_video(video_id):
             stop=None,
         )
         blog_post = response.choices[0].text.strip()
+
+        cache_set(video_id, blog_post)
+
         return blog_post
     except RequestException as e:
         st.error(f"Error converting video with Video ID: {video_id}")
