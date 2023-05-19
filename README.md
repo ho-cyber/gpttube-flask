@@ -1,5 +1,8 @@
 # GPTube - video to text converter
 
+## Installation
+pipenv install
+
 ## App URL
 
 URL
