@@ -6,7 +6,7 @@ file_path = "data.json"
 __cache = None
 
 
-def init_cache():
+def __init_cache():
     global __cache
 
     try:
@@ -20,7 +20,7 @@ def cache_get(key: str) -> Optional[str]:
     global __cache
 
     if __cache is None:
-        init_cache()
+        __init_cache()
 
     try:
         return __cache[key]
@@ -33,7 +33,7 @@ def cache_set(key: str, data: str) -> None:
     global __cache
 
     if __cache is None:
-        init_cache()
+        __init_cache()
         # __cache = dict(())
 
     __cache[key] = data

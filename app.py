@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 from youtube_transcript_api import YouTubeTranscriptApi
 from requests.exceptions import RequestException
-from .cache import cache_get, cache_set
+from src.cache import cache_get, cache_set
 
 key = st.secrets["auth_token"]
 # Set up OpenAI API credentials
